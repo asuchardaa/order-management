@@ -1,0 +1,435 @@
+﻿<Window x:Class="OrderManagement.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="OrderMaster - Dashboard" MinHeight="800" MinWidth="1200"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized">
+
+    <Window.Resources>
+        <!-- Menu Button Style -->
+        <Style x:Key="MenuButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="#b0b0b0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="20,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                Padding="{TemplateBinding Padding}"
+                                CornerRadius="8" Margin="5">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#2a2a2a"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Active Menu Button Style -->
+        <Style x:Key="ActiveMenuButtonStyle" TargetType="Button" BasedOn="{StaticResource MenuButtonStyle}">
+            <Setter Property="Background" Value="#4a9eff"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <!-- Card Style -->
+        <Style x:Key="CardStyle" TargetType="Border">
+            <Setter Property="Background" Value="#2a2a2a"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="2" Opacity="0.3"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Stat Card Style -->
+        <Style x:Key="StatCardStyle" TargetType="Border" BasedOn="{StaticResource CardStyle}">
+            <Setter Property="Padding" Value="25"/>
+            <Setter Property="MinHeight" Value="120"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.Background>
+            <SolidColorBrush Color="#1a1a1a"/>
+        </Grid.Background>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar Navigation -->
+        <Border Grid.Column="0" Background="#0f0f0f" BorderBrush="#333" BorderThickness="0,0,1,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Logo Section -->
+                <Border Grid.Row="0" Padding="20" Background="#0a0a0a">
+                    <StackPanel>
+                        <TextBlock Text="OrderMaster" FontSize="20" FontWeight="Bold" Foreground="White"/>
+                        <TextBlock Text="Order Management System" FontSize="10" Foreground="#666" Margin="0,2,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Navigation Menu -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,10,0,0">
+                    <StackPanel Name="NavigationMenu">
+                        <!-- Dashboard -->
+                        <Button Name="btnDashboard" Style="{StaticResource ActiveMenuButtonStyle}" Click="NavigateToPage">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="📊" FontSize="16" Margin="0,0,12,0"/>
+                                <TextBlock Text="Dashboard"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- List Overview -->
+                        <Button Name="btnListOverview" Style="{StaticResource MenuButtonStyle}" Click="NavigateToPage">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="📋" FontSize="16" Margin="0,0,12,0"/>
+                                <TextBlock Text="List Overview"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Order Status -->
+                        <Button Name="btnOrderStatus" Style="{StaticResource MenuButtonStyle}" Click="NavigateToPage">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="📦" FontSize="16" Margin="0,0,12,0"/>
+                                <TextBlock Text="Order Status"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Order Details -->
+                        <Button Name="btnOrderDetails" Style="{StaticResource MenuButtonStyle}" Click="NavigateToPage">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="🔍" FontSize="16" Margin="0,0,12,0"/>
+                                <TextBlock Text="Order Details"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Separator -->
+                        <Separator Background="#333" Margin="15,10" Height="1"/>
+
+                        <!-- Statistics -->
+                        <Button Name="btnStatistics" Style="{StaticResource MenuButtonStyle}" Click="NavigateToPage">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="📈" FontSize="16" Margin="0,0,12,0"/>
+                                <TextBlock Text="Statistics"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Reports Screen -->
+                        <Button Name="btnReports" Style="{StaticResource MenuButtonStyle}" Click="NavigateToPage">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="📄" FontSize="16" Margin="0,0,12,0"/>
+                                <TextBlock Text="Reports"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Separator -->
+                        <Separator Background="#333" Margin="15,10" Height="1"/>
+
+                        <!-- Profile -->
+                        <Button Name="btnProfile" Style="{StaticResource MenuButtonStyle}" Click="NavigateToPage">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="👤" FontSize="16" Margin="0,0,12,0"/>
+                                <TextBlock Text="Profile"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- User Info & Logout -->
+                <Border Grid.Row="2" Background="#0a0a0a" Padding="20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- User Info -->
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                            <Border Width="30" Height="30" CornerRadius="15" Background="#4a9eff" Margin="0,0,10,0">
+                                <TextBlock Text="JD" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                          Foreground="White" FontWeight="Bold" FontSize="12"/>
+                            </Border>
+                            <StackPanel>
+                                <TextBlock Text="John Doe" Foreground="White" FontSize="12" FontWeight="SemiBold"/>
+                                <TextBlock Text="Administrator" Foreground="#666" FontSize="10"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- Logout Button -->
+                        <Button Grid.Row="1" Content="🚪 Logout" Style="{StaticResource MenuButtonStyle}" 
+                                Background="#333" Foreground="#ff4757" HorizontalAlignment="Stretch" Click="LogoutButton_Click"/>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Main Content Area -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Top Header Bar -->
+            <Border Grid.Row="0" Background="#1f1f1f" BorderBrush="#333" BorderThickness="0,0,0,1" Height="60">
+                <Grid Margin="20,0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Name="PageTitle" Text="Dashboard" FontSize="24" FontWeight="Bold" Foreground="White"/>
+                        <TextBlock Text=" / " Foreground="#666" FontSize="16" Margin="10,0"/>
+                        <TextBlock Text="Overview" Foreground="#666" FontSize="16"/>
+                    </StackPanel>
+
+                    <!-- Search and Notifications -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <!-- Search Box -->
+                        <Border Background="#333" CornerRadius="20" Width="250" Height="35" Margin="0,0,15,0">
+                            <TextBox Background="Transparent" BorderThickness="0" Foreground="White" 
+                                    VerticalAlignment="Center" Padding="15,0" FontSize="12"/>
+                        </Border>
+
+                        <!-- Notification Bell -->
+                        <Button Background="#333" Width="35" Height="35" BorderThickness="0" Cursor="Hand" Click="NotificationButton_Click">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}" CornerRadius="17.5">
+                                                    <TextBlock Text="🔔" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Dynamic Content Area -->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="20">
+                <Grid Name="ContentArea">
+                    <!-- Dashboard Content (Default) -->
+                    <Grid Name="DashboardContent" Visibility="Visible">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Welcome Section -->
+                        <TextBlock Grid.Row="0" Text="Welcome back, John!" FontSize="28" FontWeight="Bold" 
+                                  Foreground="White" Margin="0,0,0,20"/>
+
+                        <!-- Statistics Cards Row -->
+                        <Grid Grid.Row="1" Margin="0,0,0,30">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Total Orders -->
+                            <Border Grid.Column="0" Style="{StaticResource StatCardStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="📦" FontSize="24" Margin="0,0,0,10"/>
+                                    <TextBlock Text="Total Orders" Foreground="#b0b0b0" FontSize="12" Margin="0,0,0,5"/>
+                                    <TextBlock Text="1,234" Foreground="White" FontSize="28" FontWeight="Bold"/>
+                                    <TextBlock Text="+12% from last month" Foreground="#10b981" FontSize="10" Margin="0,5,0,0"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Pending Orders -->
+                            <Border Grid.Column="1" Style="{StaticResource StatCardStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="⏳" FontSize="24" Margin="0,0,0,10"/>
+                                    <TextBlock Text="Pending Orders" Foreground="#b0b0b0" FontSize="12" Margin="0,0,0,5"/>
+                                    <TextBlock Text="87" Foreground="White" FontSize="28" FontWeight="Bold"/>
+                                    <TextBlock Text="-3% from yesterday" Foreground="#ef4444" FontSize="10" Margin="0,5,0,0"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Completed Today -->
+                            <Border Grid.Column="2" Style="{StaticResource StatCardStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="✅" FontSize="24" Margin="0,0,0,10"/>
+                                    <TextBlock Text="Completed Today" Foreground="#b0b0b0" FontSize="12" Margin="0,0,0,5"/>
+                                    <TextBlock Text="45" Foreground="White" FontSize="28" FontWeight="Bold"/>
+                                    <TextBlock Text="+8% from yesterday" Foreground="#10b981" FontSize="10" Margin="0,5,0,0"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Revenue -->
+                            <Border Grid.Column="3" Style="{StaticResource StatCardStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="💰" FontSize="24" Margin="0,0,0,10"/>
+                                    <TextBlock Text="Revenue Today" Foreground="#b0b0b0" FontSize="12" Margin="0,0,0,5"/>
+                                    <TextBlock Text="$12,450" Foreground="White" FontSize="28" FontWeight="Bold"/>
+                                    <TextBlock Text="+15% from yesterday" Foreground="#10b981" FontSize="10" Margin="0,5,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+
+                        <!-- Charts and Recent Orders Section -->
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Chart Area -->
+                            <Border Grid.Column="0" Style="{StaticResource CardStyle}" Margin="0,0,10,0">
+                                <StackPanel>
+                                    <TextBlock Text="Order Trends" FontSize="18" FontWeight="SemiBold" Foreground="White" Margin="0,0,0,20"/>
+                                    <Border Height="300" Background="#333" CornerRadius="8">
+                                        <TextBlock Text="📊 Chart will be rendered here" HorizontalAlignment="Center" 
+                                                  VerticalAlignment="Center" Foreground="#666" FontSize="14"/>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Recent Orders -->
+                            <Border Grid.Column="1" Style="{StaticResource CardStyle}" Margin="10,0,0,0">
+                                <StackPanel>
+                                    <TextBlock Text="Recent Orders" FontSize="18" FontWeight="SemiBold" Foreground="White" Margin="0,0,0,20"/>
+
+                                    <!-- Order Item -->
+                                    <Border Background="#333" CornerRadius="8" Padding="15" Margin="0,0,0,10">
+                                        <StackPanel>
+                                            <Grid>
+                                                <TextBlock Text="Order #1001" FontWeight="SemiBold" Foreground="White" FontSize="12"/>
+                                                <TextBlock Text="$250.00" HorizontalAlignment="Right" Foreground="#10b981" FontSize="12" FontWeight="Bold"/>
+                                            </Grid>
+                                            <TextBlock Text="John Smith" Foreground="#b0b0b0" FontSize="10" Margin="0,2,0,0"/>
+                                            <Border Background="#4a9eff" CornerRadius="10" Padding="6,2" HorizontalAlignment="Left" Margin="0,5,0,0">
+                                                <TextBlock Text="Processing" Foreground="White" FontSize="9"/>
+                                            </Border>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Order Item -->
+                                    <Border Background="#333" CornerRadius="8" Padding="15" Margin="0,0,0,10">
+                                        <StackPanel>
+                                            <Grid>
+                                                <TextBlock Text="Order #1002" FontWeight="SemiBold" Foreground="White" FontSize="12"/>
+                                                <TextBlock Text="$180.50" HorizontalAlignment="Right" Foreground="#10b981" FontSize="12" FontWeight="Bold"/>
+                                            </Grid>
+                                            <TextBlock Text="Jane Doe" Foreground="#b0b0b0" FontSize="10" Margin="0,2,0,0"/>
+                                            <Border Background="#10b981" CornerRadius="10" Padding="6,2" HorizontalAlignment="Left" Margin="0,5,0,0">
+                                                <TextBlock Text="Completed" Foreground="White" FontSize="9"/>
+                                            </Border>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Order Item -->
+                                    <Border Background="#333" CornerRadius="8" Padding="15">
+                                        <StackPanel>
+                                            <Grid>
+                                                <TextBlock Text="Order #1003" FontWeight="SemiBold" Foreground="White" FontSize="12"/>
+                                                <TextBlock Text="$95.25" HorizontalAlignment="Right" Foreground="#10b981" FontSize="12" FontWeight="Bold"/>
+                                            </Grid>
+                                            <TextBlock Text="Mike Johnson" Foreground="#b0b0b0" FontSize="10" Margin="0,2,0,0"/>
+                                            <Border Background="#f59e0b" CornerRadius="10" Padding="6,2" HorizontalAlignment="Left" Margin="0,5,0,0">
+                                                <TextBlock Text="Pending" Foreground="White" FontSize="9"/>
+                                            </Border>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </Grid>
+
+                    <!-- Placeholder Content for Other Pages -->
+                    <Grid Name="ListOverviewContent" Visibility="Collapsed">
+                        <Border Style="{StaticResource CardStyle}">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="📋" FontSize="48" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                                <TextBlock Text="List Overview" FontSize="24" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                                <TextBlock Text="This page will show comprehensive order lists and filtering options." 
+                                          Foreground="#b0b0b0" FontSize="14" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <Grid Name="OrderStatusContent" Visibility="Collapsed">
+                        <Border Style="{StaticResource CardStyle}">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="📦" FontSize="48" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                                <TextBlock Text="Order Status" FontSize="24" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Track and update order statuses with real-time monitoring." 
+                                          Foreground="#b0b0b0" FontSize="14" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <Grid Name="OrderDetailsContent" Visibility="Collapsed">
+                        <Border Style="{StaticResource CardStyle}">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="🔍" FontSize="48" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                                <TextBlock Text="Order Details" FontSize="24" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                                <TextBlock Text="View detailed information about individual orders." 
+                                          Foreground="#b0b0b0" FontSize="14" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <Grid Name="StatisticsContent" Visibility="Collapsed">
+                        <Border Style="{StaticResource CardStyle}">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="📈" FontSize="48" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                                <TextBlock Text="Statistics" FontSize="24" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Advanced analytics and performance metrics." 
+                                          Foreground="#b0b0b0" FontSize="14" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <Grid Name="ReportsContent" Visibility="Collapsed">
+                        <Border Style="{StaticResource CardStyle}">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="📄" FontSize="48" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                                <TextBlock Text="Reports" FontSize="24" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Generate comprehensive reports and export data." 
+                                          Foreground="#b0b0b0" FontSize="14" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <Grid Name="ProfileContent" Visibility="Collapsed">
+                        <Border Style="{StaticResource CardStyle}">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="👤" FontSize="48" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                                <TextBlock Text="Profile Settings" FontSize="24" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Manage your account settings and preferences." 
+                                          Foreground="#b0b0b0" FontSize="14" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</Window>

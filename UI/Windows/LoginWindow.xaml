@@ -1,0 +1,257 @@
+﻿<Window x:Class="OrderManagement.UI.Windows.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="OrderMaster - Login" MinHeight="600" MinWidth="900"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResizeWithGrip"
+        KeyDown="Window_KeyDown">
+
+    <Grid>
+        <!-- Background -->
+        <Grid.Background>
+            <SolidColorBrush Color="#1a1a1a"/>
+        </Grid.Background>
+
+        <!-- Header -->
+        <Grid Height="60" VerticalAlignment="Top">
+            <Grid.Background>
+                <SolidColorBrush Color="#0d0d0d"/>
+            </Grid.Background>
+
+            <!-- Home icon and Login text -->
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="20,0">
+                <Button Background="Transparent" BorderThickness="0" Foreground="White" Cursor="Hand">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="🏠" FontSize="16" Margin="0,0,8,0"/>
+                        <TextBlock Text="Sign In" FontSize="14" FontWeight="Medium"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+
+            <!-- Don't have an account -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,20,0">
+                <TextBlock Text="Don't have an account?" Foreground="#b0b0b0" FontSize="12" VerticalAlignment="Center"/>
+                <Button Content="Sign Up" Background="Transparent" BorderThickness="0" 
+                        Foreground="#4a9eff" FontSize="12" Margin="5,0,0,0" Cursor="Hand" Click="SignUp_Click"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Main Content -->
+        <Grid Margin="0,60,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Left Side - Illustration and Text -->
+            <Grid Grid.Column="0" Background="#2a2a2a" Margin="20,20,10,20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Header Text -->
+                <StackPanel Grid.Row="0" Margin="40,40,40,20">
+                    <TextBlock Text="OrderMaster" FontSize="24" FontWeight="Bold" Foreground="White" HorizontalAlignment="Left"/>
+                </StackPanel>
+
+                <!-- Illustration -->
+                <Viewbox Grid.Row="1" Margin="40,20">
+                    <Canvas Width="200" Height="150">
+                        <!-- 3D Box with Dashboard -->
+                        <Rectangle Fill="#1e3a8a" Width="120" Height="80" Canvas.Left="40" Canvas.Top="35">
+                            <Rectangle.RenderTransform>
+                                <SkewTransform AngleX="-10" AngleY="5"/>
+                            </Rectangle.RenderTransform>
+                        </Rectangle>
+
+                        <!-- Top face -->
+                        <Polygon Fill="#3b82f6" Points="40,35 160,35 180,15 60,15"/>
+
+                        <!-- Right face -->
+                        <Polygon Fill="#2563eb" Points="160,35 160,115 180,95 180,15"/>
+
+                        <!-- Dashboard elements -->
+                        <Rectangle Fill="#60a5fa" Width="80" Height="4" Canvas.Left="50" Canvas.Top="45"/>
+                        <Rectangle Fill="#93c5fd" Width="60" Height="4" Canvas.Left="50" Canvas.Top="55"/>
+                        <Rectangle Fill="#dbeafe" Width="40" Height="4" Canvas.Left="50" Canvas.Top="65"/>
+
+                        <!-- Person icon -->
+                        <Ellipse Fill="#fbbf24" Width="15" Height="15" Canvas.Left="120" Canvas.Top="75"/>
+                        <Rectangle Fill="#f59e0b" Width="10" Height="15" Canvas.Left="122.5" Canvas.Top="85"/>
+
+                        <!-- Floating elements -->
+                        <Rectangle Fill="#10b981" Width="8" Height="8" Canvas.Left="20" Canvas.Top="20" RenderTransformOrigin="0.5,0.5">
+                            <Rectangle.RenderTransform>
+                                <RotateTransform Angle="45"/>
+                            </Rectangle.RenderTransform>
+                        </Rectangle>
+                        <Rectangle Fill="#f59e0b" Width="6" Height="6" Canvas.Left="170" Canvas.Top="60" RenderTransformOrigin="0.5,0.5">
+                            <Rectangle.RenderTransform>
+                                <RotateTransform Angle="45"/>
+                            </Rectangle.RenderTransform>
+                        </Rectangle>
+                    </Canvas>
+                </Viewbox>
+
+                <!-- Bottom Text -->
+                <StackPanel Grid.Row="2" Margin="40,20,40,40">
+                    <TextBlock Text="Welcome back!" 
+                               FontSize="18" FontWeight="SemiBold" Foreground="White" 
+                               TextWrapping="Wrap" Margin="0,0,0,10"/>
+                    <TextBlock Text="Sign in to continue managing your orders." 
+                               FontSize="14" Foreground="#b0b0b0" 
+                               TextWrapping="Wrap" Margin="0,0,0,20"/>
+                    <TextBlock Text="Streamline your business operations today!" 
+                               FontSize="12" Foreground="#888" 
+                               TextWrapping="Wrap"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- Right Side - Login Form -->
+            <Grid Grid.Column="1" Margin="10,20,20,20">
+                <StackPanel VerticalAlignment="Center" Margin="40">
+                    <!-- Form Header -->
+                    <TextBlock Text="Sign in to your account" 
+                               FontSize="24" FontWeight="Bold" Foreground="White" 
+                               Margin="0,0,0,5"/>
+                    <TextBlock Text="Enter your credentials to access your dashboard." 
+                               FontSize="12" Foreground="#b0b0b0" 
+                               Margin="0,0,0,30"/>
+
+                    <!-- Form Fields -->
+                    <TextBox Name="txtUsernameEmail" 
+                             Background="#333" BorderBrush="#555" BorderThickness="1"
+                             Foreground="White" FontSize="14" Padding="12"
+                             Margin="0,0,0,15" Height="40"
+                             Text="Email or username" />
+
+                    <PasswordBox Name="txtPassword" 
+                                 Background="#333" BorderBrush="#555" BorderThickness="1"
+                                 Foreground="White" FontSize="14" Padding="12"
+                                 Margin="0,0,0,15" Height="40"/>
+
+                    <!-- Remember Me and Forgot Password -->
+                    <Grid Margin="0,0,0,20">
+                        <CheckBox Name="chkRememberMe" Content="Remember me" 
+                                  Foreground="#b0b0b0" FontSize="12" 
+                                  HorizontalAlignment="Left"/>
+                        <Button Content="Forgot Password?" Background="Transparent" BorderThickness="0" 
+                                Foreground="#4a9eff" FontSize="12" HorizontalAlignment="Right" 
+                                Cursor="Hand" Click="ForgotPassword_Click"/>
+                    </Grid>
+
+                    <!-- Sign In Button -->
+                    <Button Name="btnSignIn" Content="Sign In" 
+                            Background="#4a9eff" BorderThickness="0"
+                            Foreground="White" FontSize="14" FontWeight="SemiBold"
+                            Height="45" Margin="0,0,0,20" Cursor="Hand"
+                            Click="SignIn_Click">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}" 
+                                                    CornerRadius="6" Padding="{TemplateBinding Padding}">
+                                                <ContentPresenter HorizontalAlignment="Center" 
+                                                                VerticalAlignment="Center"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#3a8eef"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <!-- Divider -->
+                    <Grid Margin="0,0,0,20">
+                        <Separator Background="#555" Height="1"/>
+                        <TextBlock Text="or continue with" Background="#1a1a1a" Foreground="#888" 
+                                   FontSize="12" HorizontalAlignment="Center" Padding="10,0"/>
+                    </Grid>
+
+                    <!-- Social Login Buttons -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Grid.Column="0" Content="Google" 
+                                Background="#333" BorderBrush="#555" BorderThickness="1"
+                                Foreground="White" FontSize="12" Height="40" Cursor="Hand"
+                                Click="SocialLogin_Click">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}" 
+                                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                                        CornerRadius="6" Padding="{TemplateBinding Padding}">
+                                                    <ContentPresenter HorizontalAlignment="Center" 
+                                                                    VerticalAlignment="Center"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#444"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+
+                        <Button Grid.Column="2" Content="Facebook" 
+                                Background="#333" BorderBrush="#555" BorderThickness="1"
+                                Foreground="White" FontSize="12" Height="40" Cursor="Hand"
+                                Click="SocialLogin_Click">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}" 
+                                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                                        CornerRadius="6" Padding="{TemplateBinding Padding}">
+                                                    <ContentPresenter HorizontalAlignment="Center" 
+                                                                    VerticalAlignment="Center"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#444"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </Grid>
+
+                    <!-- Demo Credentials Info -->
+                    <Border Background="#2a2a2a" CornerRadius="8" Padding="15" Margin="0,20,0,0">
+                        <StackPanel>
+                            <TextBlock Text="Demo Credentials:" FontWeight="Bold" Foreground="#4a9eff" FontSize="12" Margin="0,0,0,5"/>
+                            <TextBlock Text="Email: admin@ordermaster.com" Foreground="#b0b0b0" FontSize="11"/>
+                            <TextBlock Text="Password: admin123" Foreground="#b0b0b0" FontSize="11"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
