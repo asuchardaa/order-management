@@ -1,8 +1,6 @@
 ﻿using OrderManagement.Managers;
 using OrderManagement.Model;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,61 +10,24 @@ namespace OrderManagement.UI.Windows
 {
     public partial class SignupWindow : Window
     {
+        private bool _isClosing = false;
+
         public SignupWindow()
         {
             InitializeComponent();
-            SetupPlaceholders();
-        }
-
-        private void SetupPlaceholders()
-        {
-            txtFullName.GotFocus += RemovePlaceholder;
-            txtFullName.LostFocus += AddPlaceholder;
-            txtEmail.GotFocus += RemovePlaceholder;
-            txtEmail.LostFocus += AddPlaceholder;
-            AddPlaceholder(txtFullName, null);
-            AddPlaceholder(txtEmail, null);
-        }
-
-        private void RemovePlaceholder(object sender, RoutedEventArgs e)
-        {
-            if (sender is TextBox textBox)
-            {
-                if (textBox.Foreground.ToString() == "#FF888888")
-                {
-                    textBox.Text = "";
-                    textBox.Foreground = System.Windows.Media.Brushes.White;
-                }
-            }
-        }
-
-        private void AddPlaceholder(object sender, RoutedEventArgs e)
-        {
-            if (sender is TextBox textBox)
-            {
-                if (string.IsNullOrWhiteSpace(textBox.Text))
-                {
-                    string placeholder = "";
-                    if (textBox.Name == "txtFullName")
-                        placeholder = "Your full name";
-                    else if (textBox.Name == "txtEmail")
-                        placeholder = "Your email address";
-
-                    textBox.Text = placeholder;
-                    textBox.Foreground = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFrom("#888888");
-                }
-            }
         }
 
         private void CreateAccount_Click(object sender, RoutedEventArgs e)
         {
+            if (_isClosing) return;
+
             if (ValidateForm())
             {
                 var newUser = new User
                 {
                     FullName = GetTextBoxValue(txtFullName),
                     Email = GetTextBoxValue(txtEmail),
-                    Username = GetTextBoxValue(txtEmail),
+                    Username = GetTextBoxValue(txtEmail), // Using email as username
                     Password = txtPassword.Password,
                     Role = "Customer",
                     CreatedAt = DateTime.Now,
@@ -75,26 +36,35 @@ namespace OrderManagement.UI.Windows
 
                 if (UserManager.RegisterUser(newUser))
                 {
-                    MessageBox.Show("Account created successfully! You can now log in.",
-                        "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("Účet byl úspěšně vytvořen! Nyní se můžete přihlásit.",
+                        "Registrace úspěšná", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                    var loginWindow = new LoginWindow();
-                    loginWindow.Show();
-                    this.Close();
+                    // Návrat na login window
+                    ReturnToLogin();
                 }
                 else
                 {
-                    MessageBox.Show("An account with this email already exists.",
-                        "Registration Failed", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("Účet s tímto emailem již existuje.",
+                        "Registrace selhala", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
         }
 
-        private string GetTextBoxValue(TextBox textBox)
+        private void ReturnToLogin()
         {
-            if (textBox.Foreground.ToString() == "#FF888888")
-                return "";
-            return textBox.Text;
+            if (!_isClosing)
+            {
+                _isClosing = true;
+
+                var loginWindow = new LoginWindow();
+                loginWindow.Show();
+                SafeClose();
+            }
+        }
+
+        private string GetTextBoxValue(Xceed.Wpf.Toolkit.WatermarkTextBox textBox)
+        {
+            return string.IsNullOrWhiteSpace(textBox.Text) ? "" : textBox.Text;
         }
 
         private bool ValidateForm()
@@ -107,7 +77,7 @@ namespace OrderManagement.UI.Windows
             // Validate full name
             if (string.IsNullOrWhiteSpace(fullName))
             {
-                ShowError("Please enter your full name.");
+                ShowError("Zadejte prosím své celé jméno.");
                 txtFullName.Focus();
                 return false;
             }
@@ -115,14 +85,14 @@ namespace OrderManagement.UI.Windows
             // Validate email
             if (string.IsNullOrWhiteSpace(email))
             {
-                ShowError("Please enter your email address.");
+                ShowError("Zadejte prosím svou emailovou adresu.");
                 txtEmail.Focus();
                 return false;
             }
 
             if (!IsValidEmail(email))
             {
-                ShowError("Please enter a valid email address.");
+                ShowError("Zadejte prosím platnou emailovou adresu.");
                 txtEmail.Focus();
                 return false;
             }
@@ -130,14 +100,14 @@ namespace OrderManagement.UI.Windows
             // Validate password
             if (string.IsNullOrWhiteSpace(password))
             {
-                ShowError("Please enter a password.");
+                ShowError("Zadejte prosím heslo.");
                 txtPassword.Focus();
                 return false;
             }
 
             if (password.Length < 6)
             {
-                ShowError("Password must be at least 6 characters long.");
+                ShowError("Heslo musí mít alespoň 6 znaků.");
                 txtPassword.Focus();
                 return false;
             }
@@ -145,7 +115,7 @@ namespace OrderManagement.UI.Windows
             // Validate password confirmation
             if (password != confirmPassword)
             {
-                ShowError("Passwords do not match.");
+                ShowError("Hesla se neshodují.");
                 txtConfirmPassword.Focus();
                 return false;
             }
@@ -168,32 +138,78 @@ namespace OrderManagement.UI.Windows
 
         private void ShowError(string message)
         {
-            MessageBox.Show(message, "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            if (!_isClosing)
+            {
+                MessageBox.Show(message, "Chyba při registraci", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         private void SignIn_Click(object sender, RoutedEventArgs e)
         {
-            var loginWindow = new LoginWindow();
-            loginWindow.Show();
-            this.Close();
+            if (!_isClosing) {
+                this.Hide();
+                var loginWindow = new LoginWindow();
+                bool? result = loginWindow.ShowDialog();
+
+                if (!_isClosing) {
+                    if (result != true)
+                    {
+                        this.Show();
+                    }
+                    else
+                    {
+                        SafeClose();
+                    }
+                }
+            }
+        }
+
+        private void SafeClose()
+        {
+            if (!_isClosing)
+            {
+                _isClosing = true;
+                try
+                {
+                    this.Close();
+                }
+                catch (InvalidOperationException)
+                {
+                    // Okno už je zavřené - ignorujeme
+                }
+            }
         }
 
         private void SocialLogin_Click(object sender, RoutedEventArgs e)
         {
+            if (_isClosing) return;
+
             var button = sender as Button;
             string provider = button?.Content.ToString();
 
-            MessageBox.Show($"{provider} login is not implemented yet.",
-                "Feature Not Available", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show($"Registrace přes {provider} zatím není implementována.",
+                "Funkce není dostupná", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        // Handle Enter key press for form submission
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            if (e.Key == Key.Enter && !_isClosing)
             {
                 CreateAccount_Click(sender, e);
             }
+        }
+
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            _isClosing = true;
+
+            // Pokud DialogResult není nastavený, znamená to zrušení (X button)
+            if (this.DialogResult == null)
+            {
+                this.DialogResult = false;
+            }
+
+            base.OnClosing(e);
         }
     }
 }

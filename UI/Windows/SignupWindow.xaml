@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        Title="OrderMaster - Signup" MinHeight="800" MinWidth="1200"
+        Title="Order Management - Registrace" MinHeight="800" MinWidth="1200"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResizeWithGrip">
 
@@ -24,15 +24,15 @@
                 <Button Background="Transparent" BorderThickness="0" Foreground="White" Cursor="Hand">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="🏠" FontSize="16" Margin="0,0,8,0"/>
-                        <TextBlock Text="Signup" FontSize="14" FontWeight="Medium"/>
+                        <TextBlock Text="Registrace" FontSize="14" FontWeight="Medium"/>
                     </StackPanel>
                 </Button>
             </StackPanel>
 
             <!-- Already have an account -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,20,0">
-                <TextBlock Text="Already have an account?" Foreground="#b0b0b0" FontSize="12" VerticalAlignment="Center"/>
-                <Button Content="Sign In" Background="Transparent" BorderThickness="0" 
+                <TextBlock Text="Už máte vytvořený účet?" Foreground="#b0b0b0" FontSize="12" VerticalAlignment="Center"/>
+                <Button Content="Přihlásit se" Background="Transparent" BorderThickness="0" 
                         Foreground="#4a9eff" FontSize="12" Margin="5,0,0,0" Cursor="Hand" Click="SignIn_Click"/>
             </StackPanel>
         </Grid>
@@ -54,7 +54,7 @@
 
                 <!-- Header Text -->
                 <StackPanel Grid.Row="0" Margin="40,40,40,20">
-                    <TextBlock Text="OrderMaster" FontSize="24" FontWeight="Bold" Foreground="White" HorizontalAlignment="Left"/>
+                    <TextBlock Text="Order Management" FontSize="24" FontWeight="Bold" Foreground="White" HorizontalAlignment="Left"/>
                 </StackPanel>
 
                 <!-- Illustration -->
@@ -98,13 +98,13 @@
 
                 <!-- Bottom Text -->
                 <StackPanel Grid.Row="2" Margin="40,20,40,40">
-                    <TextBlock Text="Manage your orders effortlessly!" 
+                    <TextBlock Text="Řiďte své objednávky bez starostí." 
                                FontSize="18" FontWeight="SemiBold" Foreground="White" 
                                TextWrapping="Wrap" Margin="0,0,0,10"/>
-                    <TextBlock Text="Streamline your order processing today." 
+                    <TextBlock Text="Zefektivněte zpracování objednávek ještě dnes." 
                                FontSize="14" Foreground="#b0b0b0" 
                                TextWrapping="Wrap" Margin="0,0,0,20"/>
-                    <TextBlock Text="Track orders and update statuses easily!" 
+                    <TextBlock Text="Sledujte objednávky a snadno aktualizujte jejich stav!" 
                                FontSize="12" Foreground="#888" 
                                TextWrapping="Wrap"/>
                 </StackPanel>
@@ -113,60 +113,44 @@
             <!-- Right Side - Signup Form -->
             <Grid Grid.Column="1" Margin="10,20,20,20">
                 <StackPanel VerticalAlignment="Center" Margin="40">
-                    <!-- Form Header -->
-                    <TextBlock Text="Get started for free" 
+                    <TextBlock Text="Začít nebylo nikdy jednodušší!" 
                                FontSize="24" FontWeight="Bold" Foreground="White" 
-                               Margin="0,0,0,5"/>
-                    <TextBlock Text="Enjoy a 7-day trial with full access." 
+                               Margin="5,0,0,10"/>
+                    <TextBlock Text="Užijte si 7denní zkušební verzi s plným přístupem v aplikaci." 
                                FontSize="12" Foreground="#b0b0b0" 
-                               Margin="0,0,0,30"/>
+                               Margin="5,0,0,30"/>
                     
-                    <!-- Form Fields -->
-                    <xctk:WatermarkTextBox Name="txtFullName" 
+                    <xctk:WatermarkTextBox Name="txtFullName" Watermark="Zadej celé jméno..."
                              Background="#333" BorderBrush="#555" BorderThickness="1"
-                             Foreground="White" FontSize="14" Padding="12"
-                             Margin="0,0,0,15" Height="40">
-                        
-                    </xctk:WatermarkTextBox>
+                             HorizontalContentAlignment="Left"
+                             VerticalContentAlignment="Center"
+                             Foreground="White" FontSize="14"
+                             Margin="10" Height="40"/>
 
-                    <TextBox Name="txtEmail" 
-                             Background="#333" BorderBrush="#555" BorderThickness="1"
-                             Foreground="White" FontSize="14" Padding="12"
-                             Margin="0,0,0,15" Height="40">
-                        <TextBox.Style>
-                            <Style TargetType="TextBox">
-                                <Style.Triggers>
-                                    <Trigger Property="Text" Value="">
-                                        <Setter Property="Background">
-                                            <Setter.Value>
-                                                <VisualBrush AlignmentX="Left" AlignmentY="Center" Stretch="None">
-                                                    <VisualBrush.Visual>
-                                                        <Label Content="Your unique username" Foreground="#888" Background="Transparent"/>
-                                                    </VisualBrush.Visual>
-                                                </VisualBrush>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBox.Style>
-                    </TextBox>
+                    <xctk:WatermarkTextBox Name="txtEmail" Watermark="Zadej email..."
+                                           Background="#333" BorderBrush="#555" BorderThickness="1"
+                                           HorizontalContentAlignment="Left"
+                                           VerticalContentAlignment="Center"
+                                           Foreground="White" FontSize="14"
+                                           Margin="10" Height="40"/>
 
-                    <PasswordBox Name="txtPassword" 
-                                 Background="#333" BorderBrush="#555" BorderThickness="1"
-                                 Foreground="White" FontSize="14" Padding="12"
-                                 Margin="0,0,0,15" Height="40"/>
+                    <xctk:WatermarkPasswordBox Name="txtPassword" 
+                                               Watermark="Zadej heslo..."
+                                               Background="#333" BorderBrush="#555" BorderThickness="1"
+                                               Foreground="White" FontSize="14" HorizontalContentAlignment="Left" 
+                                               VerticalContentAlignment="Center" Margin="10" Height="40"/>
 
-                    <PasswordBox Name="txtConfirmPassword" 
-                                 Background="#333" BorderBrush="#555" BorderThickness="1"
-                                 Foreground="White" FontSize="14" Padding="12"
-                                 Margin="0,0,0,20" Height="40"/>
+                    <xctk:WatermarkPasswordBox Name="txtConfirmPassword" 
+                                               Watermark="Potvrď heslo..."
+                                               Background="#333" BorderBrush="#555" BorderThickness="1" 
+                                               Foreground="White" FontSize="14" HorizontalContentAlignment="Left"
+                                               VerticalContentAlignment="Center" Margin="10" Height="40" />
 
                     <!-- Create Account Button -->
-                    <Button Content="Create account" 
+                    <Button Content="Vytvořit účet" 
                             Background="#4a9eff" BorderThickness="0"
                             Foreground="White" FontSize="14" FontWeight="SemiBold"
-                            Height="45" Margin="0,0,0,20" Cursor="Hand">
+                            Height="45" Margin="20" Cursor="Hand" Click="CreateAccount_Click">
                         <Button.Style>
                             <Style TargetType="Button">
                                 <Setter Property="Template">
@@ -192,7 +176,7 @@
                     <!-- Divider -->
                     <Grid Margin="0,0,0,20">
                         <Separator Background="#555" Height="1"/>
-                        <TextBlock Text="or sign up with" Background="#1a1a1a" Foreground="#888" 
+                        <TextBlock Text="nebo se přihlásit přes" Background="#1a1a1a" Foreground="#888" 
                                    FontSize="12" HorizontalAlignment="Center" Padding="10,0"/>
                     </Grid>
 
@@ -206,6 +190,7 @@
 
                         <Button Grid.Column="0" Content="Google" 
                                 Background="#333" BorderBrush="#555" BorderThickness="1"
+                                Margin="20"
                                 Foreground="White" FontSize="12" Height="40" Cursor="Hand">
                             <Button.Style>
                                 <Style TargetType="Button">
@@ -233,7 +218,8 @@
 
                         <Button Grid.Column="2" Content="Facebook" 
                                 Background="#333" BorderBrush="#555" BorderThickness="1"
-                                Foreground="White" FontSize="12" Height="40" Cursor="Hand">
+                                Foreground="White" FontSize="12" Height="40" Cursor="Hand"
+                                Margin="20">
                             <Button.Style>
                                 <Style TargetType="Button">
                                     <Setter Property="Template">
